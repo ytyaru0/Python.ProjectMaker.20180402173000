@@ -18,6 +18,7 @@
                 * command_replace.tsv
             * pj/
                 * setup_complete_candidate_pj.sh
+                * categoly_root.list
             * repo/
                 * setup_complete_candidate_repo.sh
     * script/
@@ -50,6 +51,11 @@
                         * Context/
                             * hello.py
             * pj/
+                * categoly.list
+                * py/
+                * sh/
+                * html/
+                    * blog
             * repo/
 
 * /tmp/work/.meta/
@@ -200,3 +206,139 @@ RAMディスクに配置したら、doコマンド初回利用時にのみ実行
 
 ファイルの分類を最適化するためにディレクトリ構造やファイル名を定める。だが、コマンド入力時、その構造そのままだと都合が悪いことがある。冗長など。
 
+
+
+
+
+## テンプレ名例
+
+* ~/root/db/template/pj
+    * py
+        * 2/
+        * 3/
+            * Context/
+                * test
+                * db/sqlite
+                * http/request/requests
+                * http/request/urllib
+                * http/server
+                * http/scrape/bs4
+                * ui/c/main
+                * ui/c/args
+                * ui/c/parse
+                * ui/g/tk/button
+                * ui/g/tk/entry
+    * sh
+    * html
+        * blog
+
+## テンプレート
+
+カテゴリとテンプレの区別がつかない。どうするか。
+
+* A. 同一階層に配置
+* B. カテゴリDir指定
+* C. テンプレDir指定
+* D. テンプレDir圧縮ファイル化
+
+C案がバランスとれてて良さげ。
+
+### A. 同一階層に配置
+
+* template/
+    * py/
+        * test/
+        * db.sqlite/
+        * http.request.requests/
+        * http.request.urllib/
+        * http.server/
+        * http.scrape.bs4/
+        * cui.main/
+        * cui.args/
+        * cui.parse/
+        * gui.tk.button
+        * gui.tk.entry
+
+カテゴリ名は`.`区切。ディレクトリ名に入れてしまう。
+
+自動化できるが、`.`がメタ文字になってしまうし量が増えたら見づらくなる。
+
+### B. カテゴリDir指定
+
+commands.tsv
+
+```tsv
+py/test                     py
+py/http/request/requests    py http req
+py/http/request/urllib      py http req urllib
+py/ui/c/main                py cui
+py/ui/c/args                py cui args
+py/ui/g/tk/button           py gui tk
+py/ui/g/tk/entry            py gui tk
+```
+
+すべて手動で作成せねばならない。
+
+### C. テンプレDir指定
+
+* template/
+    * py/
+        * test/
+            * src
+                * {{filename}}.py
+            * test
+                * {{filename}}Test.py
+            * __TEMPLATE__
+
+テンプレートのルートディレクトリに`__TEMPLATE__`という名の空ファイルを用意する。
+
+読込は自動化できるが、`__TEMPLATE__`ファイルは手動作成。
+
+### D. テンプレDir圧縮ファイル化
+
+* template/
+    * py/
+        * test.zip
+        * db/
+            * sqlite.zip
+
+テンプレを修正しづらくなる。
+
+## プロジェクト名
+
+```
+{lang}.{pjname}.{datetime}
+```
+
+任意に変更できるようにしたい。仕組みは要検討。
+
+pj.conf
+```
+[Name]
+Generator=ProjectNameGenerator.py
+```
+
+ProjectNameGenerator.py
+
+```python
+from abc import ABCMeta, abstructmethod
+class ProjectNameGenerator(metaclass=ABCMeta):
+    @abstructmethod
+    def Generate(self): pass
+    @property
+    def Language(self): return ''
+    @property
+    def Augs(self): return ''
+```
+```python
+import datetime
+from ProjectNameGenerator import ProjectNameGenerator
+class DefaultProjectNameGenerator(ProjectNameGenerator):
+    def Generate(self):
+        return self.Language + '.' + Augs.dirname + '.' + f"{datetime.datetime.now():%Y%m%d%H%M%S}"
+```
+```python
+class ProjectNameGenerator:
+    def Generate(self, lang, args):
+        return ''
+```
