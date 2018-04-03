@@ -42,6 +42,9 @@
                 * repo/
 
 * ~/root/db/
+    * meta/
+        * programming/
+            * [languages.yml](https://raw.githubusercontent.com/github/linguist/master/lib/linguist/languages.yml)
     * template/
         * _command/
             * do/
