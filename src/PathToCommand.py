@@ -26,13 +26,13 @@ class PathToCommand:
     def __MetaTemplate(self, path:str):
         s = self.__SplitPath(path)
         name, ext = os.path.splitext(s[-1])
-        if '_DEFAULT' == name: return ' '.join(s[:-1])
+        if '_DEFAULT' == name: return ' '.join(s[:-1]).strip()
         else: return None
         
     def __Plain(self, path:str):
         s = self.__SplitPath(path)
         if '.' in s[-1]: s[-1] = os.path.splitext(s[-1])[0]
-        return ' '.join(s)
+        return ' '.join(s).strip()
 
     # テンプレートディレクトリからの相対パス
     # py/3/ のように先頭がパス形式でないため分割されない os.path.split()
