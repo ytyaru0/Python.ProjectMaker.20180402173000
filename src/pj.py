@@ -4,6 +4,7 @@ from PathIni import PathIni
 import shutil
 import collections
 from CommandToTemplate import CommandToTemplate
+from ProjectName import ProjectName
 
 class Pj:
     def __init__(self, args:list):
@@ -12,7 +13,7 @@ class Pj:
         pathlib.Path(self.__path_dir_target).mkdir(parents=True, exist_ok=True)
 
     def Run(self):
-        return shutil.copytree(CommandToTemplate(self.__args).Path, os.path.join(self.__path_dir_target, self.GetName()))
+        return shutil.copytree(CommandToTemplate(self.__args).Path, os.path.join(self.__path_dir_target, ProjectName().Generate(args[1])))
         
     def GetName(self):
         pass
