@@ -1,4 +1,5 @@
 import sys, os.path, pathlib
+sys.path.append(str(pathlib.Path(__file__).parent))
 sys.path.append(os.path.expanduser('~/root/_meta/path/'))
 from PathIni import PathIni
 from Command import Command
@@ -11,7 +12,7 @@ class ProjectName:
         #self.__path_target = os.path.join(PathIni()['root_db_meta_programming'], "languages.yml")
 
     def Generate(self, commands:list)->str:
-        lang = ExtToLang().To(commands[1])
+        lang = ExtToLang().To(commands[0])
         dt = '{0:%Y%m%d%H%M%S}'.format(datetime.datetime.now())
         categolies, tpl_var_dict = Command().Analize(commands)
         print(lang, dt, tpl_var_dict )

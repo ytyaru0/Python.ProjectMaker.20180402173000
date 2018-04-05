@@ -13,7 +13,8 @@ class Pj:
         pathlib.Path(self.__path_dir_target).mkdir(parents=True, exist_ok=True)
 
     def Run(self):
-        return shutil.copytree(CommandToTemplate(self.__args).Path, os.path.join(self.__path_dir_target, ProjectName().Generate(args[1])))
+        CommandToTemplate(self.__args).To()
+        #return shutil.copytree(CommandToTemplate(self.__args).Path, os.path.join(self.__path_dir_target, ProjectName().Generate(args[1])))
         
     def GetName(self):
         pass
