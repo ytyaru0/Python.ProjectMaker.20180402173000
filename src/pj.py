@@ -13,7 +13,7 @@ class Pj:
         pathlib.Path(self.__path_dir_target).mkdir(parents=True, exist_ok=True)
 
     def Run(self):
-        CommandToTemplate(self.__args).To()
+        return CommandToTemplate(self.__args).To()
         #return shutil.copytree(CommandToTemplate(self.__args).Path, os.path.join(self.__path_dir_target, ProjectName().Generate(args[1])))
         
     def GetName(self):
@@ -24,5 +24,5 @@ if __name__ == '__main__':
     import sys
     if len(sys.argv) < 2: raise Exception('引数不足です。ファイル拡張子をください。')
     sys.stdout.flush()
-    Pj(sys.argv[1:]).Run()
-    #print(Pj(sys.argv[1:]).Run())
+    #Pj(sys.argv[1:]).Run()
+    print(Pj(sys.argv[1:]).Run())
