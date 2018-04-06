@@ -24,4 +24,5 @@ if __name__ == '__main__':
     import sys
     if len(sys.argv) < 2: raise Exception('引数不足です。ファイル拡張子をください。')
     sys.stdout.flush()
-    print(Pj(sys.argv[1:]).Run())
+    Pj(sys.argv[1:]).Run()
+    #print(Pj(sys.argv[1:]).Run())

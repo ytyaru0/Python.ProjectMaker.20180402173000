@@ -2,12 +2,14 @@ import sys, os.path, pathlib
 import shlex, shutil
 #import jinja2
 #from jinja2 import Template, Environment, FileSystemLoader, meta
+import string
 from CommandsFile import CommandsFile
 import datetime
 sys.path.append(os.path.expanduser('~/root/_meta/path/'))
 from PathIni import PathIni
 from name.ProjectName import ProjectName
 from name.Command import Command
+from TemplateRenderer import TemplateRenderer
 
 class CommandToTemplate:
     def __init__(self, commands:list):
@@ -25,13 +27,30 @@ class CommandToTemplate:
 
         if 'filename' in tpl_var_dict: filename = tpl_var_dict['filename']
         elif '_1' in tpl_var_dict: filename = tpl_var_dict['_1']
+        elif '_0' in tpl_var_dict: filename = tpl_var_dict['_0']
         else: filename = '{{filename}}'
-        # {{filename}}置換
+        
+        # パス名 {{filename}}置換
         for p in path_target.glob('**/*{{filename}}*'):
             fn = p.name.replace('{{filename}}', filename)
             p.rename(p.parent / fn)
 
-        return path_target 
+        for p in path_target.glob('**/*'):
+            if p.is_file() and not p.is_symlink():
+                res = TemplateRenderer().Render(p, filename=filename)
+                with p.open(mode='w') as f:
+                    f.write(res)
+        """       
+        # ファイル内容 {{filename}}置換
+        for p in path_target.glob('**/*'):
+            if p.is_file() and not p.is_symlink():
+                env = Environment(loader=FileSystemLoader(str(path_target)))
+                template = env.get_template(p.relative_to(path_target), p)
+                template.globals['now'] = datetime.datetime.now()
+                with p.open(mode='w') as f:
+                    f.write(template.render(filename=filename))
+        """
+        return path_target
         """
         env = Environment(loader=FileSystemLoader(str(self.__cmdfile.TemplateDir)))
         template = env.get_template(path)

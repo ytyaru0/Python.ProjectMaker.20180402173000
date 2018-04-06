@@ -10,7 +10,7 @@ class ExtToLang:
         #self.__path_target = os.path.join(PathIni()['root_db_meta_programming'], "languages.yml")
 
     def To(self, ext):
-        print(ext)
+        #print(ext)
         if type(ext) != str: raise ValueError('引数extは拡張子を表す文字列にしてください。(実行環境や言語を表す短いテキスト) 例: py')
         
         filepath = self.__GetExt2LangTsvFile()

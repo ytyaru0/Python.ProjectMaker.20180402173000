@@ -15,7 +15,7 @@ class ProjectName:
         lang = ExtToLang().To(commands[0])
         dt = '{0:%Y%m%d%H%M%S}'.format(datetime.datetime.now())
         categolies, tpl_var_dict = Command().Analize(commands)
-        print(lang, dt, tpl_var_dict )
+        #print(lang, dt, tpl_var_dict )
         if 'dirname' in tpl_var_dict: return tpl_var_dict['dirname']
         elif '_0' in tpl_var_dict: return lang + '.' + tpl_var_dict['_0'] + '.' + dt 
         else: return lang + '.' + dt
